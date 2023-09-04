@@ -1,4 +1,66 @@
-# jogo da velha 4x4;
-# AUTOR:Andrey Kusman gonçalves;
-# inicializacao do jogo vazio
-def inicar
+codigo feito por Andrey kusman Goncalves
+# Jogo da Velha 4x4 em Python
+
+# Regras:
+# - O jogo é jogado em um tabuleiro 4x4.
+# - Dois jogadores, X e O, alternam suas jogadas.
+# - O objetivo é conseguir quatro símbolos iguais em linha, coluna ou diagonal.
+# - O jogo termina em empate se o tabuleiro estiver cheio e nenhum jogador vencer.
+# - Cada jogador deve inserir suas jogadas no formato 'linha coluna' (por exemplo, '2 3' para a segunda linha e terceira coluna).
+
+# Função para imprimir o tabuleiro
+def imprimir_tabuleiro(tabuleiro):
+    for linha in tabuleiro:
+        print(" | ".join(linha))
+        print("-" * 23)
+
+# Função para verificar se um jogador venceu
+def verificar_vitoria(tabuleiro, jogador):
+    # Verificar linhas e colunas
+    for i in range(4):
+        if all(tabuleiro[i][j] == jogador for j in range(4)) or all(tabuleiro[j][i] == jogador for j in range(4)):
+            return True
+
+    # Verificar diagonais
+    if all(tabuleiro[i][i] == jogador for i in range(4)) or all(tabuleiro[i][3 - i] == jogador for i in range(4)):
+        return True
+
+    return False
+
+# Função principal do jogo
+def jogo_da_velha():
+    tabuleiro = [[" " for _ in range(4)] for _ in range(4)]
+    jogador_atual = "X"
+    jogadas_restantes = 16
+
+    while True:
+        imprimir_tabuleiro(tabuleiro)
+        print(f"Vez do jogador {jogador_atual}")
+        
+        try:
+            linha, coluna = map(int, input("Digite sua jogada (linha coluna): ").split())
+            
+            if tabuleiro[linha - 1][coluna - 1] != " ":
+                print("Essa posição já está ocupada. Tente novamente.")
+                continue
+
+            tabuleiro[linha - 1][coluna - 1] = jogador_atual
+            jogadas_restantes -= 1
+
+            if verificar_vitoria(tabuleiro, jogador_atual):
+                imprimir_tabuleiro(tabuleiro)
+                print(f"Jogador {jogador_atual} venceu! Parabéns!")
+                break
+
+            if jogadas_restantes == 0:
+                imprimir_tabuleiro(tabuleiro)
+                print("O jogo terminou em empate!")
+                break
+
+            jogador_atual = "O" if jogador_atual == "X" else "X"
+        
+        except (ValueError, IndexError):
+            print("Jogada inválida. Por favor, digite uma jogada válida.")
+
+if _name_ == "_main_":
+    jogo_da_velha()
