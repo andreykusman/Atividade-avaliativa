@@ -1,63 +1,59 @@
 # Jogo da Velha 4x4 em Python
-
-# Regras:
 # - O jogo é jogado em um tabuleiro 4x4.
 # - Dois jogadores, X e O, alternam suas jogadas.
-# - O objetivo é conseguir quatro símbolos iguais em linha, coluna ou diagonal.
-# - O jogo termina em empate se o tabuleiro estiver cheio e nenhum jogador vencer.
 # - Cada jogador deve inserir suas jogadas no formato 'linha coluna' (por exemplo, '2 3' para a segunda linha e terceira coluna).
 
-# Função para imprimir o tabuleiro
-def imprimir_tabuleiro(tabuleiro):
-    for linha in tabuleiro:
+# Função para imprimir o jogo
+def imprimir_jogo(jogo):
+    for linha in jogo:
         print(" | ".join(linha))
         print("-" * 23)
 
 # Função para verificar se um jogador venceu
-def verificar_vitoria(tabuleiro, jogador):
+def verificar_vitoria(jogo, jogador):
     # Verificar linhas e colunas
     for i in range(4):
-        if all(tabuleiro[i][j] == jogador for j in range(4)) or all(tabuleiro[j][i] == jogador for j in range(4)):
+        if all(jogo[i][j] == jogador for j in range(4)) or all(jogo[j][i] == jogador for j in range(4)):
             return True
 
     # Verificar diagonais
-    if all(tabuleiro[i][i] == jogador for i in range(4)) or all(tabuleiro[i][3 - i] == jogador for i in range(4)):
+    if all(jogo[i][i] == jogador for i in range(4)) or all(jogo[i][3 - i] == jogador for i in range(4)):
         return True
 
     return False
 
 # Função principal do jogo
 def jogo_da_velha():
-    tabuleiro = [[" " for _ in range(4)] for _ in range(4)]
+    jogo = [[" " for _ in range(4)] for _ in range(4)]
     jogador_atual = "X"
 
 #contador de jogadas
     jogadas_restantes = 16
 
     while True:
-        imprimir_tabuleiro(tabuleiro)
+        imprimir_jogo(jogo)
         print(f"Vez do jogador {jogador_atual}")
 # define a linha e a coluna digitadas pelo jogador
         try:
             linha, coluna = map(int, input("Digite sua jogada (linha coluna): ").split())
 # verifica se a resposta esta correta,caso a pessoa tenha colocado na mesma posiçao que outro participante,sera repitido o progama.
-            if tabuleiro[linha - 1][coluna - 1] != " ":
+            if jogo[linha - 1][coluna - 1] != " ":
                 print("Essa posição já está ocupada. Tente novamente.")
                 continue
 # vai diminuindo as opcoes
-            tabuleiro[linha - 1][coluna - 1] = jogador_atual
+            jogo[linha - 1][coluna - 1] = jogador_atual
 #contador diminuindo
             jogadas_restantes -= 1
 
 #imprime se o 0 ou x ganhou,imprime o nome do vencedor com a tabela
-            if verificar_vitoria(tabuleiro, jogador_atual):
-                imprimir_tabuleiro(tabuleiro)
+            if verificar_vitoria(jogo, jogador_atual):
+                imprimir_jogo(jogo)
                 print(f"Jogador {jogador_atual} venceu! Parabéns!")
                 break
 
 # if imprime se caso nenhum dos dois conseguirem formar uma linha com quatro
             if jogadas_restantes == 0:
-                imprimir_tabuleiro(tabuleiro)
+                imprimir_jogo(jogo)
                 print("O jogo terminou em empate!")
                 break
 
